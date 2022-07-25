@@ -1,8 +1,27 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
+}
+
+@keyframes anime-left {
+  from {
+    transform: translate(-10px, 0px);
+  }
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes anime-up {
+  from {
+    transform: translate(10px, -10px);
+  }
+  to {
+    transform: translate(0px, 0px);
+  }
 }
 
 body {
@@ -21,6 +40,8 @@ body {
   height: 100vh;
   margin: 20px 10px;
   background-color: #6b6303;
+  border: solid 3px;
+  border-radius: 10px;
 }
 
 .page .titulo {
@@ -31,7 +52,6 @@ body {
   text-transform: uppercase;
   padding: 30px 0px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
-  border-radius: 10px 10px 0px 0px;
 }
 
 .page .wrapper-tarefa {
@@ -55,7 +75,7 @@ body {
   font-size: 25px;
   font-weight: 700;
   cursor: pointer;
-  transition: .5s;
+  transition: .3s;
 }
 
 .page .wrapper-tarefa .lista-tarefa:hover {
@@ -72,8 +92,37 @@ body {
   cursor: pointer;
 }
 
+.page .wrapper-tarefa .lista-tarefa .checkbox:checked {
+  all: unset;
+  align-self: center;
+  height: 31px;
+  position: relative;
+  background: #000;
+  border-radius: 5px;
+}
+
+.page .wrapper-tarefa .lista-tarefa .checkbox:checked:hover {
+  background-color: #fbc81b;
+}
+
+.page .wrapper-tarefa .lista-tarefa .checkbox:checked::before {
+  content: '✔';
+  font-size: 18px;
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  color: #fff;
+}
+
+.page .wrapper-tarefa .lista-tarefa .checkbox:checked + .texto {
+  text-decoration: line-through 3px !important;
+  color: #474747;
+}
+
 .page .wrapper-tarefa .lista-tarefa .texto {
+  display: flex;
   flex-wrap: wrap;
+  align-self: center;
   transition: .3s;
 }
 
@@ -86,7 +135,11 @@ body {
 .page .wrapper-tarefa .lista-tarefa .btn-fechar {
   background-color: #000;
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   align-self: center;
+  font-weight: 600;
   height: 31px;
   color: #fff;
   border-radius: 5px;
@@ -103,7 +156,7 @@ body {
 .page .wrapper-criar-tarefa {
   display: grid;
   height: 88px;
-  grid-template-columns: 30px 1fr 30px;
+  grid-template-columns: 50px 1fr 50px;
   gap: 10px;
   justify-content: center;
   padding: 20px 30px;
@@ -116,8 +169,23 @@ body {
   border-bottom: solid 10px #fff19f;
 }
 
-.page .wrapper-criar-tarefa .icon {
-  justify-self: center;
+.page .wrapper-criar-tarefa .btn-enviar, .page .wrapper-criar-tarefa .btn-limpar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 25px;
+}
+
+.page .wrapper-criar-tarefa .btn-enviar:hover, .page .wrapper-criar-tarefa .btn-limpar:hover {
+  opacity: 80%;
+}
+
+.page .wrapper-criar-tarefa .btn-enviar:hover {
+  animation: anime-up .5s infinite;
+}
+
+.page .wrapper-criar-tarefa .btn-limpar:hover {
+  animation: anime-left .5s infinite;
 }
 
 .page .wrapper-criar-tarefa input {
@@ -138,10 +206,11 @@ body {
 .page .wrapper-criar-tarefa input::placeholder {
   font-style: italic;
   font-weight: 300;
+  font-size: 18px;
 }
 
 @media (max-width: 600px) {
   .page .wrapper-criar-tarefa input::placeholder {
-    font-size: 16px;
+    font-size: 14px;
   }
 }

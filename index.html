@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Externos -->
+    <script src="https://kit.fontawesome.com/109d143e9b.js" crossorigin="anonymous"></script>
+
     <!-- Estilo -->
     <link rel="stylesheet" href="css/main.css">
 
+    <!-- Script -->
+    <script src="js/index.js" defer></script>
+
     <title>#Mini Projetos - Todo List</title>
 </head>
+
 <body>
     <section class="page">
         <h1 class="titulo">todo - list</h1>
 
-        <div class="wrapper-tarefa">
-            <label class="lista-tarefa" for="tarefa">
-                <input class="checkbox" type="checkbox" name="tarefa" id="tarefa">
-                <p class="texto">Estudar JavaScript</p>
-                <button class="btn-fechar">X</button>
-            </label>
-
-
+        <div class="wrapper-tarefa" id="wrapper-tarefa">
+            <!-- Adicionar nova tarefa -->
 
         </div>
         <div class="wrapper-criar-tarefa">
-            <p class="icon">^</p>
-            <input type="text" name="" id="" placeholder="Digite e pressione enter para adicionar a tarefa" required>
-            <p class="icon">^</p>
+            <button class="btn-enviar"><i class="fa-solid fa-paper-plane"></i></button>
+            <input type="text" name="" id="" placeholder="Click no ícone ou pressione enter para adicionar a tarefa..."
+                required>
+            <button class="btn-limpar"><i class="fa-solid fa-delete-left"></i></button>
         </div>
     </section>
 </body>
+
 </html>
