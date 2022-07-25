@@ -188,7 +188,7 @@ body {
   animation: anime-left .5s infinite;
 }
 
-.page .wrapper-criar-tarefa input {
+.page .wrapper-criar-tarefa .text-tarefa {
   background: none;
   border: none;
   padding: 5px;
@@ -198,19 +198,19 @@ body {
 }
 
 @media (max-width: 600px) {
-  .page .wrapper-criar-tarefa input {
+  .page .wrapper-criar-tarefa .text-tarefa {
     font-size: 18px;
   }
 }
 
-.page .wrapper-criar-tarefa input::placeholder {
+.page .wrapper-criar-tarefa .text-tarefa::placeholder {
   font-style: italic;
   font-weight: 300;
   font-size: 18px;
 }
 
 @media (max-width: 600px) {
-  .page .wrapper-criar-tarefa input::placeholder {
+  .page .wrapper-criar-tarefa .text-tarefa::placeholder {
     font-size: 14px;
   }
 }
