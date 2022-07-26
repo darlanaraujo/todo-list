@@ -41,6 +41,24 @@ $sombra: 1px 1px 5px rgba(0, 0 , 0, .70);
     }
 }
 
+@keyframes fade-up {
+    from {
+        transform: translate(0px, -250px);
+    }
+    to {
+        transform: translate(0px, 0px);
+    }
+}
+
+@keyframes fade-down {
+    from {
+        transform: translate(0px, 0px);
+    }
+    to {
+        transform: translate(0px, -250px);
+    }
+}
+
 // DEFINIÇÕES DO PROJETO
 body {
     background-color: $corAmarelo;
@@ -106,15 +124,17 @@ body {
             }
 
             .checkbox {
+                all: unset;
+                align-self: center;
+                width: 30px;
+                height: 31px;
+                position: relative;
+                background: $corBranco;
+                border-radius: 5px;
                 cursor: pointer;
                 
                 &:checked {
-                    all: unset;
-                    align-self: center;
-                    height: 31px;
-                    position: relative;
                     background: $corPreto;
-                    border-radius: 5px;
 
                     &:hover {
                         background-color: $corAmarelo;
@@ -131,6 +151,8 @@ body {
                 }
 
                 &:checked + .texto {
+                    -moz-text-decoration: line-through 3px;
+                    -webkit-text-decoration: line-through 3px;
                     text-decoration: line-through 3px !important;
                     color: $corCinza;
     
@@ -180,7 +202,7 @@ body {
         gap: 10px;
         justify-content: center;
         padding: 20px 30px;
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
         width: 100%;
         background-color: $corBege;
         font-size: 25px;
@@ -238,5 +260,74 @@ body {
     }
 }
 
+.modal {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0 , 0, .80);
+    display: none;
 
+    &.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .modal-confirmacao {
+            animation: fade-up .5s forwards;
+            z-index: 100;
+        }
+    }
+
+    .modal-confirmacao {
+        width: 270px;
+        height: 150px;
+        background-color: $corAmarelo;
+        border: solid 2px $corPreto;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: $sombra;
+        animation: fade-down .5s forwards;
+        z-index: -1;
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .wrapper-btn {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+
+            .btn-modal {
+                height: 40px;
+                background: none;
+                border-radius: 5px;
+                border: none;
+                box-shadow: $sombra;
+                color: #fff;
+                text-transform: uppercase;
+                cursor: pointer;
+
+                & > i {
+                    margin-right: 5px;
+                }
+
+                &:hover {
+                    opacity: 85%;
+                }
+            }
+
+            .btn-excluir {
+                background-color: #f53240;
+            }
+
+            .btn-cancelar {
+                background-color: #373737;
+            }
+        }
+    }
+
+
+}
 

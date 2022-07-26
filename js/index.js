@@ -5,7 +5,20 @@ const wrapperTarefa = document.querySelector('#wrapper-tarefa')
 const textTarefa = document.querySelector('#text-tarefa');
 const btnEnviar = document.querySelector('#btn-enviar');
 const btnLimpar = document.querySelector('#btn-limpar');
+const modal = document.querySelector('#modal');
+const btnExcluir = document.querySelector('#btn-excluir');
+const btnCancelar = document.querySelector('#btn-cancelar');
 
+let index;
+let status;
+
+
+/** Banco de Dados LocalStorage
+ * 
+ */
+const banco2 = () => {
+    window.localStorage.setItem('db-tarefas', 'dados')
+}
 
 /** Banco de Dados Local;
  * modelo temporário que será substituido pelo BD LocalStorage do navegador.
@@ -21,7 +34,7 @@ let banco = [
  * @param {*} tarefa Nome da tarefa inserida pelo usuário
  * @param {*} status Status da tarefa. Por padrão sempre vazio
  */
-function setBanco(tarefa, status='') {
+function setBanco(tarefa, status) {
     // banco.push({tarefa: tarefa, status: status}); // Adiciona ao final da lista;
     banco.unshift({tarefa: tarefa, status: status}); // Adiciona ao inicio da lista;
 }
@@ -50,7 +63,7 @@ function getBanco() {
     itemHTML.classList.add('lista-tarefa'); // Adiciona a classe para os estilos;
 
     itemHTML.innerHTML = `
-        <input class="checkbox" type="checkbox" ${status} data-index${index}>
+        <input class="checkbox" type="checkbox" ${status} data-index=${index}>
         <p class="texto">${tarefa}</p>
         <button class="btn-fechar" data-index=${index}>X</button>
     ` // Adiciono o conteúdo HTML dentro do item criado;
@@ -95,6 +108,18 @@ function limpaTexto() {
     textTarefa.value = '';
 }
 
+/** Função excluir
+ * Recebe o parametro index, limpa o HTML para não haver duplicidade na tela. Acessa o BD usando o indice para remover o item desejado.
+ * Por fim, puxa os itens do BD mostrando na tela já com a atualização.
+ * 
+ * @param {*} index Parametro que vem de uma variável global. Essa variável vem o evento de click no elemento que pega o valor do atributo data-index.
+ */
+function excluir(index) {
+    limparHTML();
+    banco.splice(index, 1);
+    getBanco();
+}
+
 // Eventos
 btnEnviar.addEventListener('click', enviarTarefa);
 btnLimpar.addEventListener('click', limpaTexto);
@@ -106,7 +131,27 @@ textTarefa.addEventListener('keydown', (event) => {
     }
 });
 wrapperTarefa.addEventListener('click', (event) => {
-    console.log(event.target);
+    index = event.target.dataset.index; // Salva o indice do elemento clicado em uma variável global;
+
+    if(event.target.localName == 'button') {
+        modal.classList.add('active'); // Se p click for no botão, chama o modal.
+
+    } else if(event.target.localName == 'input') {
+        // Se o click for no checkbox, verifica se ele já está marcado. E salva o status em uma variável global.
+        if(event.target.checked) {
+            status = 'checked'; // Se não estiver, marca.
+        } else {
+            status = ''; // Se estiver, desmarca.
+        }
+        banco[index].status = status; // Atualiza o banco com o novo status usando o indice como parametro.
+    }
+});
+btnCancelar.addEventListener('click', () => {
+    modal.classList.remove('active');
+});
+btnExcluir.addEventListener('click', () => {
+    excluir(index);
+    modal.classList.remove('active');
 });
 
 // Iniciador do código;
