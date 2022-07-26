@@ -111,9 +111,11 @@ body {
   align-self: center;
   width: 30px;
   height: 31px;
-  position: relative;
   background: #fff;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 
@@ -128,9 +130,6 @@ body {
 .page .wrapper-tarefa .lista-tarefa .checkbox:checked::before {
   content: '✔';
   font-size: 18px;
-  position: absolute;
-  top: 7px;
-  left: 8px;
   color: #fff;
 }
 

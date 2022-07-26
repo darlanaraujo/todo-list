@@ -128,9 +128,11 @@ body {
                 align-self: center;
                 width: 30px;
                 height: 31px;
-                position: relative;
                 background: $corBranco;
                 border-radius: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 cursor: pointer;
                 
                 &:checked {
@@ -143,9 +145,6 @@ body {
                     &::before {
                         content: '✔';
                         font-size: 18px;
-                        position: absolute;
-                        top: 7px;
-                        left: 8px;
                         color: #fff;
                     }
                 }
