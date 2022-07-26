@@ -1,9 +1,11 @@
 'use strict';
 
 // Variáveis globais;
-const btnEnviar = document.querySelector('#btn-enviar');
+const wrapperTarefa = document.querySelector('#wrapper-tarefa')
 const textTarefa = document.querySelector('#text-tarefa');
+const btnEnviar = document.querySelector('#btn-enviar');
 const btnLimpar = document.querySelector('#btn-limpar');
+
 
 /** Banco de Dados Local;
  * modelo temporário que será substituido pelo BD LocalStorage do navegador.
@@ -15,37 +17,71 @@ let banco = [
 ];
 
 /** Acesso ao BD
- * Essa função recebe a tarefa vinda do usuário e adiciona ao BD o nome da tarefa e o seu status
+ * Essa função recebe a tarefa vinda do usuário e adiciona no inicio do array/BD o nome da tarefa e o seu status.
  * @param {*} tarefa Nome da tarefa inserida pelo usuário
  * @param {*} status Status da tarefa. Por padrão sempre vazio
  */
 function setBanco(tarefa, status='') {
-    banco.push({tarefa: tarefa, status: status});
+    // banco.push({tarefa: tarefa, status: status}); // Adiciona ao final da lista;
+    banco.unshift({tarefa: tarefa, status: status}); // Adiciona ao inicio da lista;
 }
 
 /** Pegando os dados do BD
  * Essa função acessa o BD e faz a leitura dos dados.
  * A cada loop ele adiciona os dados dentro da função criarTarefa() passando os itens como parametros.
+ * Ele também envia a parametro index que mostra o indice do item, dessa forma consigo diferenciar os itens da Array/BD pelo seu indice.
  */
 function getBanco() {
-    banco.forEach((item) => {
-        criarEstruturaTarefa(item.tarefa, item.status);
+    banco.forEach((item, index) => {
+        criarEstruturaTarefa(item.tarefa, item.status, index);
     });
 }
 
-// const getBanco = () => {
-//     banco.forEach((item) => criarTarefa(item.tarefa, item.status));
-// }
+/** Construtor do HTML
+ * A função cria em uma variável um elemento (label) que vai ser o elemento pai de outros elementos HTML.
+ * Depois de criado esse elemento recebe a classe que define o estilo CSS.
+ * Por fim, ele recebe o conteúdo HTML, com os elementos e classes já definidos.
+ * @param {*} tarefa recebe o texto inserido pelo usuário na interface.
+ * @param {*} status Se preenchido (checked) ele habilita a estilização CSS para mostrar a tarefa como marcada.
+ * @param {*} index Mostra qual é o indice do item em relação ao Array/BD.
+ */
+ const criarEstruturaTarefa = (tarefa, status, index) => {
+    const itemHTML = document.createElement('label'); // Crio na memoria um item pai;
+    itemHTML.classList.add('lista-tarefa'); // Adiciona a classe para os estilos;
 
-/** Função limpar lista do BD
- * Essa função evita duplicidade da lista do BD.
- * Sem ela, toda vez que a função getBanco() é chamada ele duplica a lista do BD.
+    itemHTML.innerHTML = `
+        <input class="checkbox" type="checkbox" ${status} data-index${index}>
+        <p class="texto">${tarefa}</p>
+        <button class="btn-fechar" data-index=${index}>X</button>
+    ` // Adiciono o conteúdo HTML dentro do item criado;
+
+    wrapperTarefa.appendChild(itemHTML); // Adiciono o item na forma de um bloco dentro do DOM;
+}
+
+/** Função enviar tarefa
+ * Essa função padroniza o texto e verifica se algo foi digitado no campo, depois chama o setBanco() passando o parametro vindo da caixa de input da tela, que por sua vez salva essa informação no BD.
+ * Depois limpa o BD para evitar duplicidade de dados.
+ * Depois pega as informação do BD, que ao mesmo tempo cria a estrutura HTML.
+ * Por fim, limpa o texto na caixa do input na tela.
+ */
+ function enviarTarefa() {
+    let texto = textTarefa.value.trim().toLowerCase();
+    if(texto.length > 0) {
+        setBanco(texto, '');
+        limparHTML();
+        getBanco();
+        limpaTexto();
+    }
+}
+
+
+/** Função limpar lista do HTML
+ * Essa função evita duplicidade da lista na tela.
+ * Sem ela, toda vez que a função getBanco() é chamada ele duplica a estrutura HTML na tela.
  * Ela acessa o elemento pai aonde estão os elementos label com os itens da tarefa.
  * Faz um loop por esse elemento pai buscando item por item dentro dele, e eliminando cada item encontrado.
  */
-function limparBD() {
-    const wrapperTarefa = document.querySelector('#wrapper-tarefa');
-
+function limparHTML() {
     while(wrapperTarefa.firstChild) {
         wrapperTarefa.removeChild(wrapperTarefa.lastChild);
     }
@@ -59,43 +95,19 @@ function limpaTexto() {
     textTarefa.value = '';
 }
 
-/** Função enviar tarefa
- * Essa função chama o setBanco() passando o parametro vindo da caixa de input da tela, que por sua vez salva essa informação no BD.
- * Depois limpa o BD para evitar duplicidade de dados.
- * Depois pega as informação do BD, que ao mesmo tempo cria a estrutura HTML.
- * Por fim, limpa o texto na caixa do input na tela.
- */
-function enviarTarefa() {
-    setBanco(textTarefa.value, '');
-    limparBD();
-    getBanco();
-    limpaTexto();
-}
-
-/** Construtor do HTML
- * A função cria em uma variável um elemento (label) que vai ser o elemento pai de outros elementos HTML.
- * Depois de criado esse elemento recebe a classe que define o estilo CSS.
- * Por fim, ele recebe o conteúdo HTML, com os elementos e classes já definidos.
- * @param {*} tarefa recebe o texto inserido pelo usuário na interface.
- * @param {*} status Se preenchido (checked) ele habilita a estilização CSS para mostrar a tarefa como marcada.
- */
-const criarEstruturaTarefa = (tarefa, status) => {
-    const itemHTML = document.createElement('label'); // Crio na memoria um item pai;
-    itemHTML.classList.add('lista-tarefa'); // Adiciona a classe para os estilos;
-
-    itemHTML.innerHTML = `
-        <input class="checkbox" type="checkbox" ${status}>
-        <p class="texto">${tarefa}</p>
-        <button class="btn-fechar">X</button>
-    ` // Adiciono o conteúdo HTML dentro do item criado;
-
-    document.querySelector('#wrapper-tarefa').appendChild(itemHTML); // Adiciono o item na forma de um bloco dentro do DOM;
-}
-
-// Comandos dos botões
+// Eventos
 btnEnviar.addEventListener('click', enviarTarefa);
 btnLimpar.addEventListener('click', limpaTexto);
-
+textTarefa.addEventListener('keydown', (event) => {
+    if(event.key === 'Enter') {
+        enviarTarefa(); // Envia a tarefa apertando Enter
+    } else if (event.key === 'Escape') {
+        limpaTexto(); // Limpa o texto apertando Esc.
+    }
+});
+wrapperTarefa.addEventListener('click', (event) => {
+    console.log(event.target);
+});
 
 // Iniciador do código;
 getBanco();

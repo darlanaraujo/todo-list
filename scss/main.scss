@@ -142,6 +142,7 @@ body {
                 flex-wrap: wrap;
                 align-self: center;
                 transition: .3s;
+                text-transform: capitalize;
 
                 @include mobile {
                     font-size: 18px;
@@ -174,7 +175,7 @@ body {
 
     .wrapper-criar-tarefa {
         display: grid;
-        height: 88px;
+        height: 82px;
         grid-template-columns: 50px 1fr 50px;
         gap: 10px;
         justify-content: center;
@@ -185,7 +186,7 @@ body {
         font-size: 25px;
         box-shadow: $sombra;
         border-radius: 0px 0px 5px 5px;
-        border-bottom: solid 10px $corBege;
+        // border-bottom: solid 10px $corBege;
         
 
         .btn-enviar, .btn-limpar {
