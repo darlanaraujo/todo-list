@@ -84,6 +84,7 @@ body {
   background: #000;
   border-left: 2px solid #fbc81b;
   border-right: 2px solid #fbc81b;
+  border-radius: 3px;
 }
 
 .page .wrapper-tarefa::-webkit-scrollbar-track {
