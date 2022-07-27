@@ -45,7 +45,7 @@ $sombra: 1px 1px 5px rgba(0, 0, 0, .70);
 
 @keyframes fade-up {
     from {
-        transform: translate(0px, -150px);
+        transform: translate(0px, -250px);
     }
 
     to {
@@ -59,7 +59,7 @@ $sombra: 1px 1px 5px rgba(0, 0, 0, .70);
     }
 
     to {
-        transform: translate(0px, -150px);
+        transform: translate(0px, -250px);
     }
 }
 
@@ -74,9 +74,14 @@ body {
 }
 
 .page {
+    max-width: 1000px;
     min-width: 350px;
     width: 800px;
+    height: 100vh;
     margin: 20px 10px;
+    background-color: rgb(107, 99, 3);
+    border: solid 3px;
+    border-radius: 10px;
 
     .titulo {
         background-color: $corPreto;
@@ -86,29 +91,16 @@ body {
         text-transform: uppercase;
         padding: 30px 0px;
         box-shadow: $sombra;
-        border-radius: 10px 10px 0px 0px;
+        // border-radius: 10px 10px 0px 0px;
     }
 
     .wrapper-tarefa {
         width: 100%;
-        max-height: calc(100vh - 250px);
+        max-height: calc(100vh - 207px);
+        min-height: calc(100vh - 207px);
         overflow-y: scroll;
         margin: 10px 0px;
         padding: 10px;
-
-        &::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: $corPreto;
-            border-left: 2px solid $corAmarelo;
-            border-right: 2px solid $corAmarelo;
-        }
-
-        &::-webkit-scrollbar-track {
-            background-color: $corAmarelo;
-        }
 
         .lista-tarefa {
             display: grid;
