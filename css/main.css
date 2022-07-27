@@ -106,6 +106,10 @@ body {
   color: #000;
 }
 
+.page .wrapper-tarefa .lista-tarefa.active {
+  background-color: #474747;
+}
+
 .page .wrapper-tarefa .lista-tarefa .checkbox {
   all: unset;
   align-self: center;
@@ -177,7 +181,7 @@ body {
 
 .page .wrapper-criar-tarefa {
   display: grid;
-  height: 82px;
+  height: 87px;
   grid-template-columns: 50px 1fr 50px;
   gap: 10px;
   justify-content: center;
@@ -189,14 +193,17 @@ body {
   border-radius: 0px 0px 5px 5px;
 }
 
-.page .wrapper-criar-tarefa .btn-enviar, .page .wrapper-criar-tarefa .btn-limpar {
+.page .wrapper-criar-tarefa .btn-enviar,
+.page .wrapper-criar-tarefa .btn-limpar {
   background: none;
+  color: #000;
   border: none;
   cursor: pointer;
   font-size: 25px;
 }
 
-.page .wrapper-criar-tarefa .btn-enviar:hover, .page .wrapper-criar-tarefa .btn-limpar:hover {
+.page .wrapper-criar-tarefa .btn-enviar:hover,
+.page .wrapper-criar-tarefa .btn-limpar:hover {
   opacity: 80%;
 }
 

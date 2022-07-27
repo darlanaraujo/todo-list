@@ -9,44 +9,44 @@ const modal = document.querySelector('#modal');
 const btnExcluir = document.querySelector('#btn-excluir');
 const btnCancelar = document.querySelector('#btn-cancelar');
 
-let index;
-let status;
+let index; // Recebe o indice que vem da tela
+let status; // Recebe o status que vem da tela
+let bancoTemp = getBanco(); // Recebe o banco que vem do navegador;
 
-
-/** Banco de Dados LocalStorage
- * 
- */
-const banco2 = () => {
-    window.localStorage.setItem('db-tarefas', 'dados')
-}
-
-/** Banco de Dados Local;
- * modelo temporário que será substituido pelo BD LocalStorage do navegador.
- */
-let banco = [
-    {tarefa: 'Estudar JavaScript', status: ''},
-    {tarefa: 'Estudar Inglês', status: ''},
-    {tarefa: 'Estudar Java', status: 'checked'}
-];
-
-/** Acesso ao BD
- * Essa função recebe a tarefa vinda do usuário e adiciona no inicio do array/BD o nome da tarefa e o seu status.
- * @param {*} tarefa Nome da tarefa inserida pelo usuário
- * @param {*} status Status da tarefa. Por padrão sempre vazio
- */
-function setBanco(tarefa, status) {
-    // banco.push({tarefa: tarefa, status: status}); // Adiciona ao final da lista;
-    banco.unshift({tarefa: tarefa, status: status}); // Adiciona ao inicio da lista;
-}
-
-/** Pegando os dados do BD
- * Essa função acessa o BD e faz a leitura dos dados.
- * A cada loop ele adiciona os dados dentro da função criarTarefa() passando os itens como parametros.
- * Ele também envia a parametro index que mostra o indice do item, dessa forma consigo diferenciar os itens da Array/BD pelo seu indice.
+/** Funçãp que retorna o BD em um Array.
+ * Recebe o endereço do BD que vem do navegador (LocalStorage), e converte o arquivo para um Array.
  */
 function getBanco() {
-    banco.forEach((item, index) => {
-        criarEstruturaTarefa(item.tarefa, item.status, index);
+    return JSON.parse(localStorage.getItem('bd-tarefas')) ?? [];
+}
+
+/** Envia dado ao Banco de Dados LocalStorage
+ * Essa função recebe um parametro no formado de Array, que é convertido para String e enviado para o BD do navegador (LocalStorage).
+ * @param {*} banco Recebe um Array; 
+ */
+function setBanco(banco) {
+    localStorage.setItem('bd-tarefas', JSON.stringify(banco));
+}
+
+/** Função que adiciona os dados da tela para o Array
+ * Essa função recebe doi parametros que são strings vindas da tela (nome da terefa e seu status).
+ * Ela adiciona esses parametros no inicio do Array que está na variável bancoTemp.
+ * Por fim, ele joga esse Array para dentro da função que converte o Array para String.
+ * 
+ * @param {*} tarefa Nome da tarefa que vem da tela
+ * @param {*} status Status da tarefa que vem da tela
+ */
+function setDados(tarefa, status) {
+    bancoTemp.unshift({tarefa: tarefa, status: status});
+    setBanco(bancoTemp);
+}
+
+/** Função que monta os dados do BD e joga para estrutura HTML
+ * Essa função acessa a função getBanco() que vem no formato de Array, percorre os dados ao mesmo tempo que monta esses dados na estrutura HTML usando a função criarEstruturaHTML
+ */
+function getDados() {
+    getBanco().forEach((item, index) => {
+        criarEstruturaHTML(item.tarefa, item.status, index);
     });
 }
 
@@ -58,7 +58,7 @@ function getBanco() {
  * @param {*} status Se preenchido (checked) ele habilita a estilização CSS para mostrar a tarefa como marcada.
  * @param {*} index Mostra qual é o indice do item em relação ao Array/BD.
  */
- const criarEstruturaTarefa = (tarefa, status, index) => {
+ const criarEstruturaHTML = (tarefa, status, index) => {
     const itemHTML = document.createElement('label'); // Crio na memoria um item pai;
     itemHTML.classList.add('lista-tarefa'); // Adiciona a classe para os estilos;
 
@@ -72,17 +72,17 @@ function getBanco() {
 }
 
 /** Função enviar tarefa
- * Essa função padroniza o texto e verifica se algo foi digitado no campo, depois chama o setBanco() passando o parametro vindo da caixa de input da tela, que por sua vez salva essa informação no BD.
- * Depois limpa o BD para evitar duplicidade de dados.
+ * Essa função padroniza o texto e verifica se algo foi digitado no campo, depois chama o setDados() passando o parametro vindo da caixa de input da tela, que por sua vez salva essa informação no BD.
+ * Depois limpa o HTML para evitar duplicidade de dados.
  * Depois pega as informação do BD, que ao mesmo tempo cria a estrutura HTML.
  * Por fim, limpa o texto na caixa do input na tela.
  */
  function enviarTarefa() {
     let texto = textTarefa.value.trim().toLowerCase();
     if(texto.length > 0) {
-        setBanco(texto, '');
+        setDados(texto, '');
         limparHTML();
-        getBanco();
+        getDados();
         limpaTexto();
     }
 }
@@ -90,7 +90,7 @@ function getBanco() {
 
 /** Função limpar lista do HTML
  * Essa função evita duplicidade da lista na tela.
- * Sem ela, toda vez que a função getBanco() é chamada ele duplica a estrutura HTML na tela.
+ * Sem ela, toda vez que a função getDados() é chamada ele duplica a estrutura HTML na tela.
  * Ela acessa o elemento pai aonde estão os elementos label com os itens da tarefa.
  * Faz um loop por esse elemento pai buscando item por item dentro dele, e eliminando cada item encontrado.
  */
@@ -108,17 +108,37 @@ function limpaTexto() {
     textTarefa.value = '';
 }
 
+/** Função que habilita o modal na tela
+ * Essa função adiciona a classe active na estrutura HTML. Essa classe habilita a estilização CCS que por sua vez monta a tela do modal.
+ */
+function setModal() {
+    modal.classList.add('active');
+}
+
 /** Função excluir
- * Recebe o parametro index, limpa o HTML para não haver duplicidade na tela. Acessa o BD usando o indice para remover o item desejado.
+ * Recebe o parametro index, limpa o HTML para não haver duplicidade na tela. Acessa a variavel que contem o BD no formato de Array, usando o indice para remover o item desejado.
+ * Depois passa esse Array com a atualização para a função setBanco().
  * Por fim, puxa os itens do BD mostrando na tela já com a atualização.
  * 
- * @param {*} index Parametro que vem de uma variável global. Essa variável vem o evento de click no elemento que pega o valor do atributo data-index.
+ * @param {*} index Parametro que vem de uma variável global. Essa variável vem do evento de click no elemento que pega o valor do atributo data-index.
  */
-function excluir(index) {
+function excluirItem(index) {
     limparHTML();
-    banco.splice(index, 1);
-    getBanco();
+    bancoTemp.splice(index, 1);
+    setBanco(bancoTemp);
+    getDados();
 }
+
+/** Função atualizar item
+ * Essa função recebe como parametro o index do objeto clicado na tela. Esse indice define a sua posição dentro do Array.
+ * Usando esse idice como guia a variavel que contem o BD muda o status que é definido por uma condição e depois atualizado o BD. 
+ * @param {*} index Parametro que vem de uma variável global. Essa variável vem do evento de click no elemento que pega o valor do atributo data-index.
+ */
+function atualizarItem(index) {
+    bancoTemp[index].status = status;
+    setBanco(bancoTemp);
+}
+
 
 // Eventos
 btnEnviar.addEventListener('click', enviarTarefa);
@@ -134,7 +154,7 @@ wrapperTarefa.addEventListener('click', (event) => {
     index = event.target.dataset.index; // Salva o indice do elemento clicado em uma variável global;
 
     if(event.target.localName == 'button') {
-        modal.classList.add('active'); // Se p click for no botão, chama o modal.
+         setModal(); // Se o click for no botão, chama o modal.
 
     } else if(event.target.localName == 'input') {
         // Se o click for no checkbox, verifica se ele já está marcado. E salva o status em uma variável global.
@@ -143,16 +163,16 @@ wrapperTarefa.addEventListener('click', (event) => {
         } else {
             status = ''; // Se estiver, desmarca.
         }
-        banco[index].status = status; // Atualiza o banco com o novo status usando o indice como parametro.
+        atualizarItem(index) // Atualiza o banco com o novo status usando o indice como parametro.
     }
 });
 btnCancelar.addEventListener('click', () => {
     modal.classList.remove('active');
 });
 btnExcluir.addEventListener('click', () => {
-    excluir(index);
+    excluirItem(index);
     modal.classList.remove('active');
 });
 
 // Iniciador do código;
-getBanco();
+getDados();

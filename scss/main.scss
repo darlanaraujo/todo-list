@@ -5,7 +5,7 @@ $corPreto: #000;
 $corCinza: rgb(71, 71, 71);
 $corBranco: #fff;
 $corAzul: #0080ff;
-$sombra: 1px 1px 5px rgba(0, 0 , 0, .70);
+$sombra: 1px 1px 5px rgba(0, 0, 0, .70);
 
 // DEFIÇÕES BASE
 * {
@@ -27,6 +27,7 @@ $sombra: 1px 1px 5px rgba(0, 0 , 0, .70);
     from {
         transform: translate(-10px, 0px);
     }
+
     to {
         transform: translate(0px, 0px);
     }
@@ -36,6 +37,7 @@ $sombra: 1px 1px 5px rgba(0, 0 , 0, .70);
     from {
         transform: translate(10px, -10px);
     }
+
     to {
         transform: translate(0px, 0px);
     }
@@ -45,6 +47,7 @@ $sombra: 1px 1px 5px rgba(0, 0 , 0, .70);
     from {
         transform: translate(0px, -250px);
     }
+
     to {
         transform: translate(0px, 0px);
     }
@@ -54,6 +57,7 @@ $sombra: 1px 1px 5px rgba(0, 0 , 0, .70);
     from {
         transform: translate(0px, 0px);
     }
+
     to {
         transform: translate(0px, -250px);
     }
@@ -102,7 +106,7 @@ body {
             display: grid;
             grid-template-columns: 30px minmax(200px, 1fr) 30px;
             gap: 30px;
-            
+
             background-color: $corAmarelo;
             box-shadow: $sombra;
             border-radius: 3px;
@@ -123,6 +127,10 @@ body {
                 }
             }
 
+            &.active {
+                background-color: $corCinza;
+            }
+
             .checkbox {
                 all: unset;
                 align-self: center;
@@ -134,7 +142,7 @@ body {
                 justify-content: center;
                 align-items: center;
                 cursor: pointer;
-                
+
                 &:checked {
                     background: $corPreto;
 
@@ -154,7 +162,7 @@ body {
                     -webkit-text-decoration: line-through 3px;
                     text-decoration: line-through 3px !important;
                     color: $corCinza;
-    
+
                 }
             }
 
@@ -191,12 +199,12 @@ body {
                 }
             }
         }
-    
+
     }
 
     .wrapper-criar-tarefa {
         display: grid;
-        height: 82px;
+        height: 87px;
         grid-template-columns: 50px 1fr 50px;
         gap: 10px;
         justify-content: center;
@@ -208,14 +216,16 @@ body {
         box-shadow: $sombra;
         border-radius: 0px 0px 5px 5px;
         // border-bottom: solid 10px $corBege;
-        
 
-        .btn-enviar, .btn-limpar {
+
+        .btn-enviar,
+        .btn-limpar {
             background: none;
+            color: $corPreto;
             border: none;
             cursor: pointer;
             font-size: 25px;
-            
+
             &:hover {
                 opacity: 80%;
             }
@@ -263,7 +273,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0 , 0, .80);
+    background-color: rgba(0, 0, 0, .80);
     display: none;
 
     &.active {
@@ -308,7 +318,7 @@ body {
                 text-transform: uppercase;
                 cursor: pointer;
 
-                & > i {
+                &>i {
                     margin-right: 5px;
                 }
 
@@ -329,4 +339,3 @@ body {
 
 
 }
-
